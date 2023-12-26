@@ -1,19 +1,54 @@
-<script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-</script>
+
 
 <template>
   <div>
-    <a href="https://vitejs.dev" target="_blank">88888
-      <!-- <img src="/vite.svg" class="logo" alt="Vite logo" /> -->
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <!-- <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" /> -->
-    </a>
-  </div>
-  <HelloWorld msg="Vite + Vue" />
-</template>
+   <div class="todo_List_title">
+      todoList
+   </div>
+   <div class="todo_list_content">
+    <div class="todo_list_add">
+        <input type="text" @keyup.enter="add" v-model="addValue">
+    </div>
+    <div class="todo_list_show">
+      <ul>
+        <li v-for="(item, i) in list ? list : []" :key="i">
+          <span>
+            名称： {{ item.name }}
+          </span>
+          <span>
+            状态 {{ item.type ? '完成' : '待办' }}
+          </span>
+          <button @click="itemDone(item)">状态更改</button>
+        </li>
+      </ul>
+    </div>
+    <div class="todo_list_fliter">
 
+    </div>
+
+   </div>
+  </div>
+</template>
+<script setup lang="ts">
+import {ref} from 'vue'
+  const addValue = ref('');
+  const list = ref([])
+  const init = () => {
+    const data = localStorage.getItem('todoList')
+    list.value = JSON.parse(data) ? JSON.parse(data) : []
+  }
+  init()
+  const add = () => {
+    list.value.unshift({
+      name: addValue.value,
+      type: false
+    })
+    localStorage.setItem('todoList', JSON.stringify(list.value))
+  }
+  const itemDone = (item) => {
+    item.type = !item.type
+  }
+</script>
 <style scoped>
 .logo {
   height: 6em;
