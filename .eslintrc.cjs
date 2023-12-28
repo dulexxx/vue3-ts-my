@@ -28,5 +28,13 @@ module.exports = {
         "vue"
     ],
     "rules": {
-    }
+    },
+    overrides: [
+        {
+            files: ['src/api/**/*.ts'],
+            rules:{
+                camelcase: 'off'
+            }
+        }
+    ]
 }
